@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model projectgroup {
+  projectgroupid                            Int                  @id @default(autoincrement())
+  projecttypeid                             Int?
+  projectgroupname                          String?              @db.VarChar(255)
+  projecttitle                              String?              @db.VarChar(255)
+  projectarea                               String?              @db.VarChar(255)
+  projectdescription                        String?
+  averagecpi                                Float?
+  description                               String?
+  convenerstaffid                           Int?
+  expertstaffid                             Int?
+  status                                    String?              @default("pending") @db.VarChar(50)
+  created                                   DateTime?            @default(now()) @db.Timestamp(6)
+  modified                                  DateTime?            @default(now()) @db.Timestamp(6)
+  staff_projectgroup_convenerstaffidTostaff staff?               @relation("projectgroup_convenerstaffidTostaff", fields: [convenerstaffid], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
+  staff_projectgroup_expertstaffidTostaff   staff?               @relation("projectgroup_expertstaffidTostaff", fields: [expertstaffid], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
+  projecttype                               projecttype?         @relation(fields: [projecttypeid], references: [projecttypeid], onDelete: NoAction, onUpdate: NoAction)
+  projectgroupmember                        projectgroupmember[]
+  projectmeeting                            projectmeeting[]
+}
+
+model grouprequest {
+  requestid         Int       @id @default(autoincrement())
+  groupname         String    @db.VarChar(255)
+  projecttitle      String    @db.VarChar(255)
+  projectarea       String?   @db.VarChar(255)
+  projectdescription String?  @db.Text
+  technologies      String?   @db.Text
+  leaderid          Int
+  memberdata        String    @db.Text
+  status            String    @default("pending") @db.VarChar(50)
+  rejectionreason   String?   @db.Text
+  created           DateTime  @default(now()) @db.Timestamp(6)
+  modified          DateTime  @default(now()) @db.Timestamp(6)
+  approvedby        Int?
+  leader            student   @relation("grouprequest_leaderToStudent", fields: [leaderid], references: [studentid], onDelete: Cascade, onUpdate: NoAction)
+  approver          staff?    @relation("grouprequest_approverToStaff", fields: [approvedby], references: [staffid], onDelete: SetNull, onUpdate: NoAction)
+
+  @@index([status])
+  @@index([leaderid])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model projectgroupmember {
+  projectgroupmemberid Int           @id @default(autoincrement())
+  isgroupleader        Boolean?      @default(false)
+  studentcgpa          Float?
+  projectgroupid       Int?
+  studentid            Int?
+  description          String?       @db.VarChar(255)
+  created              DateTime?     @default(now()) @db.Timestamp(6)
+  modified             DateTime?     @default(now()) @db.Timestamp(6)
+  projectgroup         projectgroup? @relation(fields: [projectgroupid], references: [projectgroupid], onDelete: Cascade, onUpdate: NoAction)
+  student              student?      @relation(fields: [studentid], references: [studentid], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model projectmeeting {
+  projectmeetingid         Int                        @id @default(autoincrement())
+  projectgroupid           Int?
+  guidestaffid             Int?
+  meetingdatetime          DateTime?                  @db.Timestamp(6)
+  meetingpurpose           String?                    @db.VarChar(255)
+  meetinglocation          String?                    @db.VarChar(255)
+  meetingnotes             String?
+  meetingstatus            String?                    @db.VarChar(50)
+  meetingstatusdescription String?
+  meetingstatusdatetime    DateTime?                  @db.Timestamp(6)
+  description              String?
+  created                  DateTime?                  @default(now()) @db.Timestamp(6)
+  modified                 DateTime?                  @default(now()) @db.Timestamp(6)
+  staff                    staff?                     @relation(fields: [guidestaffid], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
+  projectgroup             projectgroup?              @relation(fields: [projectgroupid], references: [projectgroupid], onDelete: Cascade, onUpdate: NoAction)
+  projectmeetingattendance projectmeetingattendance[]
+}
+
+model projectmeetingattendance {
+  projectmeetingattendanceid Int             @id @default(autoincrement())
+  studentid                  Int?
+  projectmeetingid           Int?
+  ispresent                  Boolean?        @default(true)
+  attendanceremarks          String?
+  description                String?
+  created                    DateTime?       @default(now()) @db.Timestamp(6)
+  modified                   DateTime?       @default(now()) @db.Timestamp(6)
+  projectmeeting             projectmeeting? @relation(fields: [projectmeetingid], references: [projectmeetingid], onDelete: Cascade, onUpdate: NoAction)
+  student                    student?        @relation(fields: [studentid], references: [studentid], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model projecttype {
+  projecttypeid   Int            @id @default(autoincrement())
+  projecttypename String         @db.VarChar(255)
+  description     String?
+  created         DateTime?      @default(now()) @db.Timestamp(6)
+  modified        DateTime?      @default(now()) @db.Timestamp(6)
+  projectgroup    projectgroup[]
+}
+
+model staff {
+  staffid                                          Int              @id @default(autoincrement())
+  staffname                                        String           @db.VarChar(255)
+  phone                                            String?          @db.VarChar(50)
+  email                                            String           @unique @db.VarChar(255)
+  password                                         String           @db.VarChar(255)
+  role                                             String?          @default("faculty") @db.VarChar(50)
+  description                                      String?
+  created                                          DateTime?        @default(now()) @db.Timestamp(6)
+  modified                                         DateTime?        @default(now()) @db.Timestamp(6)
+  registeredby                                     Int?
+  profileimage                                     String?          @db.VarChar(500)
+  projectgroup_projectgroup_convenerstaffidTostaff projectgroup[]   @relation("projectgroup_convenerstaffidTostaff")
+  projectgroup_projectgroup_expertstaffidTostaff   projectgroup[]   @relation("projectgroup_expertstaffidTostaff")
+  projectmeeting                                   projectmeeting[]
+  staff                                            staff?           @relation("staffTostaff", fields: [registeredby], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
+  other_staff                                      staff[]          @relation("staffTostaff")
+  student                                          student[]
+  grouprequest                                     grouprequest[]   @relation("grouprequest_approverToStaff")
+}
+
+model student {
+  studentid                Int                        @id @default(autoincrement())
+  studentname              String                     @db.VarChar(255)
+  phone                    String?                    @db.VarChar(50)
+  email                    String                     @unique @db.VarChar(255)
+  password                 String                     @db.VarChar(255)
+  description              String?
+  created                  DateTime?                  @default(now()) @db.Timestamp(6)
+  modified                 DateTime?                  @default(now()) @db.Timestamp(6)
+  registeredby             Int?
+  profileimage             String?                    @db.VarChar(500)
+  projectgroupmember       projectgroupmember[]
+  projectmeetingattendance projectmeetingattendance[]
+  staff                    staff?                     @relation(fields: [registeredby], references: [staffid], onDelete: NoAction, onUpdate: NoAction)
+  grouprequest             grouprequest[]             @relation("grouprequest_leaderToStudent")
+}
+
+model activitylog {
+  activityid  Int      @id @default(autoincrement())
+  type        String   @db.VarChar(50)
+  detail      String   @db.Text
+  userid      Int?
+  userrole    String?  @db.VarChar(50)
+  created     DateTime @default(now()) @db.Timestamp(6)
+}

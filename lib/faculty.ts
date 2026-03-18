@@ -81,7 +81,13 @@ export async function getFacultyProjects(staffId: number) {
       status: project.status === 'approved'
         ? (project.projectgroupmember.length > 0 ? 'active' : 'pending')
         : (project.status as any) || 'pending',
-      progress: getProjectProgress(project),
+      progress: getProjectProgress({
+    ...project,
+    projectmeeting: project.projectmeeting.map((m) => ({
+        ...m,
+        meetingstatus: m.meetingstatus ?? undefined,
+    })),
+}),
       members: project.projectgroupmember.length,
       icon: project.projectgroupname?.charAt(0) || 'P',
       iconColor: getRandomColor(project.projectgroupid),

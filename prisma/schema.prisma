@@ -19,6 +19,7 @@ model projectgroup {
   convenerstaffid                           Int?
   expertstaffid                             Int?
   status                                    String?              @default("pending") @db.VarChar(50)
+  githuburl         String?   @db.VarChar(500)
   created                                   DateTime?            @default(now()) @db.Timestamp(6)
   modified                                  DateTime?            @default(now()) @db.Timestamp(6)
   staff_projectgroup_convenerstaffidTostaff staff?               @relation("projectgroup_convenerstaffidTostaff", fields: [convenerstaffid], references: [staffid], onDelete: NoAction, onUpdate: NoAction)

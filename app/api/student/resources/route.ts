@@ -35,7 +35,7 @@ export async function GET() {
         groupId: member.projectgroup.projectgroupid,
         groupName: member.projectgroup.projectgroupname
       },
-      githubUrl: member.projectgroup.githuburl
+      githubUrl: (member.projectgroup as any).githuburl ?? null
     });
   } catch (error) {
     console.error('Error fetching resources:', error);
@@ -82,7 +82,7 @@ export async function PATCH(request: NextRequest) {
 
     await prisma.projectgroup.update({
       where: { projectgroupid: member.projectgroup.projectgroupid },
-      data: { githuburl: githubUrl || null }
+     data: { githuburl: githubUrl || null } as any
     });
 
     return NextResponse.json({ success: true });

@@ -59,7 +59,13 @@ export async function GET(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const progress = getProjectProgress(project);
+        const progress = getProjectProgress({
+    ...project,
+    projectmeeting: project.projectmeeting.map((m) => ({
+        ...m,
+        meetingstatus: m.meetingstatus ?? undefined,
+    })),
+});
 
         const statusMap: Record<number, string> = {
             0: 'Not Completed',

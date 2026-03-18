@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { getUserFromCookie } from '../../lib/auth';
-import { LayoutDashboard, FolderKanban, Users, FileCheck, Settings } from 'lucide-react';
+import { LayoutDashboard, FolderKanban, Users, FileCheck, Settings, CalendarDays } from 'lucide-react';
 import { Sidebar } from '../../components/layout/Sidebar';
 import { Header } from '../../components/layout/Header';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
@@ -21,13 +21,25 @@ export default function FacultyLayout({
     const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
     useEffect(() => {
-        const currentUser = getUserFromCookie();
-        if (!currentUser || currentUser.role !== 'faculty') {
-            router.push('/login');
-            return;
-        }
-        setUser(currentUser);
-        setLoading(false);
+        const performAuthCheck = () => {
+            const currentUser = getUserFromCookie();
+            if (currentUser && currentUser.role === 'faculty') {
+                setUser(currentUser);
+                setLoading(false);
+                return;
+            }
+            const timeoutId = setTimeout(() => {
+                const retryUser = getUserFromCookie();
+                if (retryUser && retryUser.role === 'faculty') {
+                    setUser(retryUser);
+                } else {
+                    router.push('/login');
+                }
+                setLoading(false);
+            }, 150);
+            return () => clearTimeout(timeoutId);
+        };
+        return performAuthCheck();
     }, [router]);
 
     const handleLogout = () => {
@@ -55,26 +67,36 @@ export default function FacultyLayout({
             id: 'projects',
             label: 'Projects',
             icon: <FolderKanban className="w-5 h-5" />,
-            href: '#',
+            href: '/faculty/projects',
             active: pathname.startsWith('/faculty/projects'),
         },
         {
             id: 'students',
             label: 'Students',
             icon: <Users className="w-5 h-5" />,
-            href: '#',
+            href: '/faculty/students',
+            active: pathname.startsWith('/faculty/students'),
+        },
+        {
+            id: 'calendar',
+            label: 'Calendar',
+            icon: <CalendarDays className="w-5 h-5" />,
+            href: '/faculty/calendar',
+            active: pathname === '/faculty/calendar',
         },
         {
             id: 'grading',
             label: 'Grading',
             icon: <FileCheck className="w-5 h-5" />,
-            href: '#',
+            href: '/faculty/grading',
+            active: pathname === '/faculty/grading',
         },
         {
             id: 'settings',
             label: 'Settings',
             icon: <Settings className="w-5 h-5" />,
-            href: '#',
+            href: '/faculty/settings',
+            active: pathname === '/faculty/settings',
         },
     ];
 

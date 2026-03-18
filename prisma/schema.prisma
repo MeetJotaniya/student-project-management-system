@@ -26,24 +26,25 @@ model projectgroup {
   projecttype                               projecttype?         @relation(fields: [projecttypeid], references: [projecttypeid], onDelete: NoAction, onUpdate: NoAction)
   projectgroupmember                        projectgroupmember[]
   projectmeeting                            projectmeeting[]
+  grade                                     grade[]
 }
 
 model grouprequest {
-  requestid         Int       @id @default(autoincrement())
-  groupname         String    @db.VarChar(255)
-  projecttitle      String    @db.VarChar(255)
-  projectarea       String?   @db.VarChar(255)
+  requestid          Int      @id @default(autoincrement())
+  groupname          String   @db.VarChar(255)
+  projecttitle       String   @db.VarChar(255)
+  projectarea        String?  @db.VarChar(255)
   projectdescription String?  @db.Text
-  technologies      String?   @db.Text
-  leaderid          Int
-  memberdata        String    @db.Text
-  status            String    @default("pending") @db.VarChar(50)
-  rejectionreason   String?   @db.Text
-  created           DateTime  @default(now()) @db.Timestamp(6)
-  modified          DateTime  @default(now()) @db.Timestamp(6)
-  approvedby        Int?
-  leader            student   @relation("grouprequest_leaderToStudent", fields: [leaderid], references: [studentid], onDelete: Cascade, onUpdate: NoAction)
-  approver          staff?    @relation("grouprequest_approverToStaff", fields: [approvedby], references: [staffid], onDelete: SetNull, onUpdate: NoAction)
+  technologies       String?  @db.Text
+  leaderid           Int
+  memberdata         String   @db.Text
+  status             String   @default("pending") @db.VarChar(50)
+  rejectionreason    String?  @db.Text
+  created            DateTime @default(now()) @db.Timestamp(6)
+  modified           DateTime @default(now()) @db.Timestamp(6)
+  approvedby         Int?
+  leader             student  @relation("grouprequest_leaderToStudent", fields: [leaderid], references: [studentid], onDelete: Cascade, onUpdate: NoAction)
+  approver           staff?   @relation("grouprequest_approverToStaff", fields: [approvedby], references: [staffid], onDelete: SetNull, onUpdate: NoAction)
 
   @@index([status])
   @@index([leaderid])
@@ -123,6 +124,7 @@ model staff {
   other_staff                                      staff[]          @relation("staffTostaff")
   student                                          student[]
   grouprequest                                     grouprequest[]   @relation("grouprequest_approverToStaff")
+  grade                                            grade[]
 }
 
 model student {
@@ -143,10 +145,29 @@ model student {
 }
 
 model activitylog {
-  activityid  Int      @id @default(autoincrement())
-  type        String   @db.VarChar(50)
-  detail      String   @db.Text
-  userid      Int?
-  userrole    String?  @db.VarChar(50)
-  created     DateTime @default(now()) @db.Timestamp(6)
+  activityid Int      @id @default(autoincrement())
+  type       String   @db.VarChar(50)
+  detail     String   @db.Text
+  userid     Int?
+  userrole   String?  @db.VarChar(50)
+  created    DateTime @default(now()) @db.Timestamp(6)
+}
+
+model grade {
+  gradeid        Int          @id @default(autoincrement())
+  projectgroupid Int
+  facultyid      Int
+  component      String       @db.VarChar(50)
+  marks          Float
+  maxmarks       Float
+  feedback       String?      @db.Text
+  gradedat       DateTime     @default(now()) @db.Timestamp(6)
+  created        DateTime     @default(now()) @db.Timestamp(6)
+  modified       DateTime     @default(now()) @db.Timestamp(6)
+  projectgroup   projectgroup @relation(fields: [projectgroupid], references: [projectgroupid], onDelete: Cascade, onUpdate: Cascade)
+  staff          staff        @relation(fields: [facultyid], references: [staffid], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([projectgroupid, component])
+  @@index([projectgroupid])
+  @@index([facultyid])
 }

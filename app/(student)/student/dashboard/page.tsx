@@ -5,9 +5,8 @@ import { useRouter } from 'next/navigation';
 import { getUserFromCookie } from '../../../../lib/auth';
 import { PhaseProgress } from '../../../../components/dashboard/PhaseProgress';
 import { ProjectDetailCard } from '../../../../components/dashboard/ProjectDetailCard';
-import { DeadlineCard } from '../../../../components/dashboard/DeadlineCard';
-import { NotificationCard } from '../../../../components/dashboard/NotificationCard';
-import { Project, Deadline, Notification } from '../../../../types';
+import { ProfileImageUpload } from '../../../../components/profile/ProfileImageUpload';
+import { Project } from '../../../../types';
 import { FolderKanban, Clock, X } from 'lucide-react';
 import { Button } from '../../../../components/ui/Button';
 
@@ -17,8 +16,6 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(true);
   const [project, setProject] = useState<Project | null>(null);
   const [phases, setPhases] = useState<any[]>([]);
-  const [deadlines, setDeadlines] = useState<Deadline[]>([]);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [requestStatus, setRequestStatus] = useState<any>(null);
 
   useEffect(() => {
@@ -33,11 +30,9 @@ export default function StudentDashboard() {
 
   const loadDashboardData = async () => {
     try {
-      const [projectRes, phasesRes, deadlinesRes, notificationsRes, requestRes] = await Promise.all([
+      const [projectRes, phasesRes, requestRes] = await Promise.all([
         fetch('/api/student/project'),
         fetch('/api/student/phases'),
-        fetch('/api/student/deadlines'),
-        fetch('/api/student/notifications'),
         fetch('/api/groups/request-status')
       ]);
 
@@ -51,16 +46,6 @@ export default function StudentDashboard() {
         setPhases(phasesData);
       }
 
-      if (deadlinesRes.ok) {
-        const deadlinesData = await deadlinesRes.json();
-        setDeadlines(deadlinesData);
-      }
-
-      if (notificationsRes.ok) {
-        const notificationsData = await notificationsRes.json();
-        setNotifications(notificationsData);
-      }
-
       if (requestRes.ok) {
         const requestData = await requestRes.json();
         setRequestStatus(requestData);
@@ -70,6 +55,23 @@ export default function StudentDashboard() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleImageUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const res = await fetch('/api/student/profile-image', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!res.ok) {
+      throw new Error('Upload failed');
+    }
+
+    const data = await res.json();
+    setUser({ ...user, profileImage: data.imageUrl });
   };
 
   if (loading) {
@@ -135,13 +137,20 @@ export default function StudentDashboard() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Left Column - Main Content */}
-      <div className="lg:col-span-2 space-y-6">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Student Dashboard</h1>
-          <p className="text-slate-400">
-            Welcome back, {user?.name || 'Student'}. Here is the status of your capstone project.
-          </p>
+      <div className="lg:col-span-3 space-y-6">
+        {/* Header with Profile */}
+        <div className="flex items-start gap-6">
+          <ProfileImageUpload
+            currentImage={user?.profileImage}
+            userName={user?.name || 'Student'}
+            onUpload={handleImageUpload}
+          />
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold text-white mb-2">Student Dashboard</h1>
+            <p className="text-slate-400">
+              Welcome back, {user?.name || 'Student'}. Here is the status of your capstone project.
+            </p>
+          </div>
         </div>
 
         {/* Current Phase */}
@@ -154,14 +163,8 @@ export default function StudentDashboard() {
         {/* Project Details */}
         <ProjectDetailCard
           project={project}
-          onViewDetails={() => console.log('View details')}
+          onViewDetails={() => router.push('/student/my-group')}
         />
-      </div>
-
-      {/* Right Column - Sidebar */}
-      <div className="space-y-6">
-        <DeadlineCard deadlines={deadlines} />
-        <NotificationCard notifications={notifications} />
       </div>
     </div>
   );

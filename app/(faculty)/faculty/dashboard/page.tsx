@@ -64,6 +64,38 @@ export default function FacultyDashboard() {
     }
   };
 
+  const handleApprove = async (id: string) => {
+    try {
+      const res = await fetch('/api/faculty/approvals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action: 'approve' })
+      });
+
+      if (res.ok) {
+        setApprovals(prev => prev.filter(a => a.id !== id));
+      }
+    } catch (error) {
+      console.error('Error approving:', error);
+    }
+  };
+
+  const handleReject = async (id: string) => {
+    try {
+      const res = await fetch('/api/faculty/approvals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action: 'reject' })
+      });
+
+      if (res.ok) {
+        setApprovals(prev => prev.filter(a => a.id !== id));
+      }
+    } catch (error) {
+      console.error('Error rejecting:', error);
+    }
+  };
+
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="text-slate-400">Loading dashboard...</div>
@@ -114,7 +146,7 @@ export default function FacultyDashboard() {
                 <ProjectCard
                   key={project.id}
                   project={project}
-                  onViewDetails={(id) => console.log('View project', id)}
+                  onViewDetails={(id) => router.push(`/faculty/projects/${id}`)}
                 />
               ))}
             </div>
@@ -130,13 +162,13 @@ export default function FacultyDashboard() {
         <div className="space-y-6">
           <ApprovalCard
             approvals={approvals}
-            onApprove={(id) => console.log('Approve', id)}
-            onReject={(id) => console.log('Reject', id)}
+            onApprove={handleApprove}
+            onReject={handleReject}
             onReview={(id) => console.log('Review', id)}
           />
           <ScheduleCard
             schedule={schedule}
-            onViewFullCalendar={() => console.log('View calendar')}
+            onViewFullCalendar={() => router.push('/faculty/calendar')}
           />
         </div>
       </div>

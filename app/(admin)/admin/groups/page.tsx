@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getUserFromCookie } from '../../../../lib/auth';
-import { Users, UserCheck, UserX } from 'lucide-react';
+import { Users, UserCheck, UserX, Github, ExternalLink } from 'lucide-react';
 import { Button } from '../../../../components/ui/Button';
 
 export default function AdminGroupsPage() {
@@ -163,7 +163,7 @@ export default function AdminGroupsPage() {
                   ))}
                 </div>
                 
-                <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-4 text-sm flex-wrap">
                   <span className="text-slate-400">
                     <Users className="inline w-4 h-4 mr-1" />
                     {group.memberCount} members
@@ -171,6 +171,18 @@ export default function AdminGroupsPage() {
                   <span className="text-slate-400">
                     Leader: {group.leaderName}
                   </span>
+                  {group.githubUrl && (
+                    <a
+                      href={group.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300"
+                    >
+                      <Github className="w-4 h-4" />
+                      Repository
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
                 </div>
               </div>
             </div>

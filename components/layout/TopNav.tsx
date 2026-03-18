@@ -8,6 +8,7 @@ export interface TopNavProps {
   navItems: Array<{ label: string; href: string; active?: boolean }>;
   searchPlaceholder?: string;
   notificationCount?: number;
+  showNotificationBell?: boolean;
   user?: {
     name: string;
     avatar?: string;
@@ -21,6 +22,7 @@ export const TopNav: React.FC<TopNavProps> = ({
   navItems,
   searchPlaceholder = 'Search projects...',
   notificationCount = 0,
+  showNotificationBell = true,
   user,
   actions,
   className,
@@ -60,12 +62,14 @@ export const TopNav: React.FC<TopNavProps> = ({
               className="pl-10 pr-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <button className="relative p-2 text-slate-400 hover:text-white transition-colors">
-            <Bell className="w-5 h-5" />
-            {notificationCount > 0 && (
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            )}
-          </button>
+          {showNotificationBell && (
+            <button className="relative p-2 text-slate-400 hover:text-white transition-colors">
+              <Bell className="w-5 h-5" />
+              {notificationCount > 0 && (
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              )}
+            </button>
+          )}
           {user && (
             <div className="relative">
               <Avatar

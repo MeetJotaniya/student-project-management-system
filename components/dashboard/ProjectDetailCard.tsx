@@ -59,20 +59,25 @@ export const ProjectDetailCard: React.FC<ProjectDetailCardProps> = ({
           <div className="mb-6">
             <h4 className="text-sm font-semibold text-slate-300 mb-2">RESOURCES</h4>
             <div className="space-y-2">
-              {project.resources.map((resource) => (
-                <a
-                  key={resource.id}
-                  href={resource.url || '#'}
-                  className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  {resource.type === 'folder' ? (
-                    <Folder className="w-4 h-4" />
-                  ) : (
-                    <FileText className="w-4 h-4" />
-                  )}
-                  <span className="text-sm">{resource.name}</span>
-                </a>
-              ))}
+              {project.resources.map((resource) => {
+                const url = resource.url || '#';
+                const isExternal = url.startsWith('http');
+                return (
+                  <a
+                    key={resource.id}
+                    href={url}
+                    {...(isExternal && { target: '_blank', rel: 'noopener noreferrer' })}
+                    className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    {resource.type === 'folder' ? (
+                      <Folder className="w-4 h-4" />
+                    ) : (
+                      <FileText className="w-4 h-4" />
+                    )}
+                    <span className="text-sm">{resource.name}</span>
+                  </a>
+                );
+              })}
             </div>
           </div>
         )}

@@ -49,7 +49,7 @@ export default function LoginPage() {
 
       if (data.success && data.user) {
         // Store user data in cookie (in production, use httpOnly cookies or JWT)
-        Cookies.set('user', JSON.stringify(data.user), { expires: 7 });
+        Cookies.set('user', JSON.stringify(data.user), { expires: 7, path: '/', sameSite: 'lax' });
         
         // Navigate based on role
         if (data.user.role === 'admin') {
@@ -146,12 +146,12 @@ export default function LoginPage() {
                 <label htmlFor="password" className="block text-sm font-medium text-slate-300">
                   Password
                 </label>
-                <a
+                {/* <a
                   href="#"
                   className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
                 >
                   Forgot Password?
-                </a>
+                </a> */}
               </div>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -214,14 +214,14 @@ export default function LoginPage() {
 
           {/* Footer Links */}
           <div className="mt-6 pt-6 border-t border-slate-700/50">
-            <p className="text-center text-sm text-slate-400 mb-2">
+            {/* <p className="text-center text-sm text-slate-400 mb-2">
               Need help accessing your account?{' '}
               <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors">
                 Contact Support
               </a>
-            </p>
+            </p> */}
             <p className="text-center text-xs text-slate-500 mt-4">
-              © 2024 University Academic Systems. All rights reserved.
+              © 2026 University Academic Systems. All rights reserved.
             </p>
           </div>
         </div>

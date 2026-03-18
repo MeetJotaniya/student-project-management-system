@@ -1,4 +1,5 @@
 import { prisma } from './prisma';
+import { getProjectProgress } from './progress';
 
 export async function getStudentProject(studentId: number) {
   try {
@@ -36,11 +37,7 @@ export async function getStudentProject(studentId: number) {
     }
 
     const project = projectMember.projectgroup;
-    const completedMeetings = project.projectmeeting.filter(
-      m => m.meetingstatus === 'completed'
-    ).length;
-    const totalMeetings = project.projectmeeting.length || 5; // Default to 5 phases
-    const progress = totalMeetings > 0 ? Math.round((completedMeetings / totalMeetings) * 100) : 0;
+    const progress = getProjectProgress(project);
 
     return {
       id: project.projectgroupid,
@@ -56,9 +53,9 @@ export async function getStudentProject(studentId: number) {
       convener: project.staff_projectgroup_convenerstaffidTostaff?.staffname,
       expert: project.staff_projectgroup_expertstaffidTostaff?.staffname,
       isLeader: projectMember.isgroupleader || false,
+      githubUrl: undefined,
       resources: [
-        { id: '1', name: 'Project Repository', type: 'folder' },
-        { id: '2', name: 'Project Proposal.pdf', type: 'file' },
+        { id: '1', name: 'Project Repository', type: 'folder', url: '/student/resources' }
       ]
     };
   } catch (error) {
@@ -93,9 +90,9 @@ export async function getStudentPhases(studentId: number) {
       return [];
     }
 
-    const meetings = projectMember.projectgroup.projectmeeting;
-    
-    // Define standard phases
+    const project = projectMember.projectgroup;
+
+    // Define standard phases (5 phases, 20% each)
     const standardPhases = [
       { label: 'Proposal', purpose: 'proposal' },
       { label: 'Review', purpose: 'review' },
@@ -104,16 +101,15 @@ export async function getStudentPhases(studentId: number) {
       { label: 'Final Submission', purpose: 'final' }
     ];
 
-    let currentPhaseIndex = 0;
-    const completedCount = meetings.filter(m => m.meetingstatus === 'completed').length;
-    currentPhaseIndex = Math.min(completedCount, standardPhases.length - 1);
+    const progress = getProjectProgress(project);
+    const currentPhaseIndex = Math.min(Math.floor(progress / 20), standardPhases.length - 1);
 
     return standardPhases.map((phase, index) => ({
       id: (index + 1).toString(),
       label: phase.label,
       status: index < currentPhaseIndex ? 'completed' as const :
-              index === currentPhaseIndex ? 'current' as const :
-              'upcoming' as const,
+        index === currentPhaseIndex ? 'current' as const :
+          'upcoming' as const,
       stepNumber: index + 1
     }));
   } catch (error) {
@@ -161,10 +157,10 @@ export async function getStudentDeadlines(studentId: number) {
       const dueDate = meeting.meetingdatetime ? new Date(meeting.meetingdatetime) : null;
       const now = new Date();
       const hoursUntil = dueDate ? Math.floor((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60)) : null;
-      
+
       let dueDateStr = 'TBD';
       let priority: 'high' | 'medium' | 'low' = 'low';
-      
+
       if (hoursUntil !== null) {
         if (hoursUntil < 24) {
           dueDateStr = `< ${hoursUntil}H`;
@@ -195,29 +191,34 @@ export async function getStudentDeadlines(studentId: number) {
 
 export async function getStudentNotifications(studentId: number) {
   try {
-    // Get recent activity logs related to the student
-    const activities = await prisma.activitylog.findMany({
-      where: {
-        OR: [
-          { userid: studentId },
-          { userrole: 'student' }
-        ]
-      },
-      orderBy: {
-        created: 'desc'
-      },
-      take: 10
+    // Derive notifications from upcoming meetings for this student
+    const projectMember = await prisma.projectgroupmember.findFirst({
+      where: { studentid: studentId },
+      include: {
+        projectgroup: {
+          where: { status: 'approved' },
+          include: {
+            projectmeeting: {
+              where: { meetingstatus: { in: ['pending', 'scheduled'] } },
+              orderBy: { meetingdatetime: 'desc' },
+              take: 10,
+              include: { staff: { select: { staffname: true } } }
+            }
+          }
+        }
+      }
     });
 
-    return activities.map(activity => ({
-      id: activity.activityid.toString(),
-      type: activity.type === 'comment' ? 'comment' as const :
-            activity.type === 'submission' ? 'submission' as const :
-            'task' as const,
-      title: activity.type.charAt(0).toUpperCase() + activity.type.slice(1),
-      message: activity.detail,
-      timestamp: formatTimeAgo(activity.created),
-      avatarInitials: activity.userrole ? activity.userrole.substring(0, 2).toUpperCase() : 'SY'
+    if (!projectMember?.projectgroup) return [];
+
+    return projectMember.projectgroup.projectmeeting.map((m, i) => ({
+      id: m.projectmeetingid.toString(),
+      type: 'comment' as const,
+      title: m.meetingpurpose || 'Meeting Scheduled',
+      message: `${m.meetinglocation || 'Location TBD'} — by ${m.staff?.staffname || 'Faculty'}`,
+      timestamp: m.meetingdatetime ? formatTimeAgo(m.meetingdatetime) : 'TBD',
+      avatarInitials: 'MT',
+      read: false
     }));
   } catch (error) {
     console.error('Error fetching student notifications:', error);
@@ -278,19 +279,78 @@ export async function getStudentStats(studentId: number) {
   }
 }
 
+export async function getStudentCalendarMeetings(studentId: number) {
+  try {
+    const projectMember = await prisma.projectgroupmember.findFirst({
+      where: {
+        studentid: studentId
+      },
+      include: {
+        projectgroup: {
+          where: {
+            status: 'approved'
+          },
+          include: {
+            projectmeeting: {
+              include: {
+                staff: true
+              },
+              orderBy: {
+                meetingdatetime: 'asc'
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (!projectMember || !projectMember.projectgroup) {
+      return [];
+    }
+
+    const meetings = projectMember.projectgroup.projectmeeting;
+    const groupName = projectMember.projectgroup.projectgroupname || 'My Group';
+
+    return meetings.map(meeting => ({
+      id: meeting.projectmeetingid.toString(),
+      title: `${meeting.meetingpurpose || 'Meeting'} - ${groupName}`,
+      date: meeting.meetingdatetime || new Date(),
+      time: meeting.meetingdatetime
+        ? new Date(meeting.meetingdatetime).toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+        : 'TBD',
+      location: meeting.meetinglocation || undefined,
+      attendees: projectMember.projectgroup!.projectmeeting.length,
+      type: meeting.meetingstatus === 'completed' ? 'review' as const
+        : meeting.meetingstatus === 'cancelled' ? 'deadline' as const
+          : 'meeting' as const,
+      notes: meeting.meetingnotes || undefined,
+      purpose: meeting.meetingpurpose || undefined,
+      status: meeting.meetingstatus || 'scheduled',
+      faculty: meeting.staff?.staffname || 'Faculty',
+      groupName
+    }));
+  } catch (error) {
+    console.error('Error fetching student calendar meetings:', error);
+    return [];
+  }
+}
+
 // Helper function
 function formatTimeAgo(date: Date): string {
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
   if (diffInSeconds < 60) return 'Just now';
-  
+
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   if (diffInMinutes < 60) return `${diffInMinutes} min${diffInMinutes > 1 ? 's' : ''} ago`;
-  
+
   const diffInHours = Math.floor(diffInMinutes / 60);
   if (diffInHours < 24) return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
-  
+
   const diffInDays = Math.floor(diffInHours / 24);
   return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
 }

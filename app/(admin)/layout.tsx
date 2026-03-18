@@ -29,13 +29,25 @@ export default function AdminLayout({
     const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
     useEffect(() => {
-        const currentUser = getUserFromCookie();
-        if (!currentUser || currentUser.role !== 'admin') {
-            router.push('/login');
-            return;
-        }
-        setUser(currentUser);
-        setLoading(false);
+        const performAuthCheck = () => {
+            const currentUser = getUserFromCookie();
+            if (currentUser && currentUser.role === 'admin') {
+                setUser(currentUser);
+                setLoading(false);
+                return;
+            }
+            const timeoutId = setTimeout(() => {
+                const retryUser = getUserFromCookie();
+                if (retryUser && retryUser.role === 'admin') {
+                    setUser(retryUser);
+                } else {
+                    router.push('/login');
+                }
+                setLoading(false);
+            }, 150);
+            return () => clearTimeout(timeoutId);
+        };
+        return performAuthCheck();
     }, [router]);
 
     const handleLogout = () => {
@@ -92,10 +104,17 @@ export default function AdminLayout({
                 </nav>
 
                 <div className="mt-auto space-y-2">
-                    <button className="w-full flex items-center gap-4 px-4 py-3.5 text-slate-500 hover:text-white hover:bg-white/5 rounded-2xl transition-all">
+                    <a
+                        href="/admin/settings"
+                        className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all ${
+                            pathname === '/admin/settings'
+                                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                                : 'text-slate-500 hover:text-white hover:bg-white/5'
+                        }`}
+                    >
                         <Settings className="w-6 h-6" />
                         <span className="hidden lg:block font-bold text-sm">Settings</span>
-                    </button>
+                    </a>
                     <button
                         onClick={() => setShowLogoutDialog(true)}
                         className="w-full flex items-center gap-4 px-4 py-3.5 text-red-500/70 hover:text-red-400 hover:bg-red-500/5 rounded-2xl transition-all"

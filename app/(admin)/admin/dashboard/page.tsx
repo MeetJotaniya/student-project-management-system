@@ -83,8 +83,12 @@ export default function AdminDashboard() {
               Welcome back. You have {statsData.pendingProposals} urgent project approvals pending and high student activity in the current cycle.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-4 bg-white text-indigo-600 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl hover:scale-105 transition-all">Review Hub</button>
-              <button className="px-8 py-4 bg-indigo-500/30 text-white border border-indigo-400/30 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl backdrop-blur-sm hover:bg-indigo-500/50 transition-all">View Analytics</button>
+              <Link href="/admin/group-requests" className="px-8 py-4 bg-white text-indigo-600 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl hover:scale-105 transition-all">
+                Group Proposals
+              </Link>
+              <Link href="/admin/groups" className="px-8 py-4 bg-indigo-500/30 text-white border border-indigo-400/30 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl backdrop-blur-sm hover:bg-indigo-500/50 transition-all">
+                View Groups
+              </Link>
             </div>
           </div>
         </div>
@@ -144,11 +148,16 @@ export default function AdminDashboard() {
           <div className="w-20 h-20 bg-indigo-500/10 border border-indigo-500/20 rounded-full flex items-center justify-center mb-6">
             <BarChart3 className="w-10 h-10 text-indigo-400" />
           </div>
-          <h3 className="text-xl font-black text-white mb-2">Detailed Reports</h3>
+          <h3 className="text-xl font-black text-white mb-2">Groups Overview</h3>
           <p className="text-sm text-slate-500 font-medium mb-8 max-w-xs">
-            Generate high-fidelity semester audits and group performance datasets.
+            View all active groups, their progress, and assigned faculty members.
           </p>
-          <button className="px-10 py-5 bg-white text-slate-950 rounded-[2rem] font-black uppercase text-xs tracking-widest hover:bg-indigo-500 hover:text-white transition-all">Download Audit</button>
+          <Link
+            href="/admin/groups"
+            className="px-10 py-5 bg-white text-slate-950 rounded-[2rem] font-black uppercase text-xs tracking-widest hover:bg-indigo-500 hover:text-white transition-all"
+          >
+            View All Groups
+          </Link>
         </div>
       </div>
     </div>

@@ -394,6 +394,7 @@ export async function getStudentGroup(studentId: number) {
       projectDescription: group?.projectdescription,
       projectArea: group?.projectarea,
       technologies,
+      githubUrl: group?.githuburl,
       isLeader: groupMember.isgroupleader,
       members: group?.projectgroupmember.map(m => ({
         id: m.projectgroupmemberid,
@@ -446,6 +447,7 @@ export async function getAllGroups() {
         projectDescription: group.projectdescription,
         projectArea: group.projectarea,
         technologies,
+        githubUrl: group.githuburl,
         memberCount: group.projectgroupmember.length,
         leaderName: leader?.student?.studentname,
         convener: group.staff_projectgroup_convenerstaffidTostaff?.staffname,

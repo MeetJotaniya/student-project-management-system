@@ -77,7 +77,7 @@ export const Logo: React.FC<LogoProps> = ({
       {/* Logo Text */}
       {showText && (
         <span className={`${textSize} font-black tracking-tight ${colorScheme.text}`}>
-          SPMS
+          Projinity
           <span className={colorScheme.accent}>.</span>
         </span>
       )}

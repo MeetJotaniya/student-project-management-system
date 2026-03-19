@@ -88,7 +88,7 @@ export default function LoginPage() {
             <div className="mb-4">
               <Logo size="lg" variant="default" showText={false} />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">SPMS Portal</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">Projinity Portal</h1>
             <p className="text-slate-400 text-sm">Sign in to manage your projects</p>
           </div>
 

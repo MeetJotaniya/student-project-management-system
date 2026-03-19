@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SPMS Portal - Student Project Management System",
+  title: "Projinity - Student Project Management System",
   description: "Manage your academic projects efficiently",
 };
 

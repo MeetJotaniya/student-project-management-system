@@ -1,4 +1,4 @@
-# Student Project Management System (SPMS)
+# Projinity (SPMS)
 
 A comprehensive web application for managing student academic projects with role-based access for Admin, Faculty, and Students.
 
@@ -35,9 +35,9 @@ A comprehensive web application for managing student academic projects with role
 
 2. **Create `.env` file** in the root directory:
    ```env
-   DATABASE_URL="postgresql://username:password@localhost:5432/spms?schema=public"
+   DATABASE_URL="postgresql://username:password@localhost:5432/projinity?schema=public"
    ```
-   > ⚠️ **Important**: Replace `username`, `password`, and `spms` with your actual PostgreSQL credentials and database name.
+   > ⚠️ **Important**: Replace `username`, `password`, and `projinity` with your actual PostgreSQL credentials and database name.
 
 3. **Generate Prisma Client**:
    ```bash

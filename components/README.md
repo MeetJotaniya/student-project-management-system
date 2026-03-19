@@ -1,6 +1,6 @@
 # Component Library
 
-This directory contains all reusable components for the SPMS application, organized following production-ready best practices.
+This directory contains all reusable components for the Projinity application, organized following production-ready best practices.
 
 ## Structure
 

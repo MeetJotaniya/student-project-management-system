@@ -132,6 +132,7 @@ exports.Prisma.ProjectgroupScalarFieldEnum = {
   convenerstaffid: 'convenerstaffid',
   expertstaffid: 'expertstaffid',
   status: 'status',
+  githuburl: 'githuburl',
   created: 'created',
   modified: 'modified'
 };

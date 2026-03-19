@@ -19,7 +19,7 @@ export function calculateProgressFromGrades(grades: { component: string; marks: 
 /**
  * Fallback: progress from completed meetings (5 phases, 20% each).
  */
-export function calculateProgressFromMeetings(meetings: { meetingstatus?: string }[]): number {
+export function calculateProgressFromMeetings(meetings: { meetingstatus?: string | null }[]): number {
   const completedCount = meetings?.filter((m) => m.meetingstatus === 'completed').length || 0;
   return Math.min(completedCount * 20, 100);
 }
@@ -29,7 +29,7 @@ export function calculateProgressFromMeetings(meetings: { meetingstatus?: string
  */
 export function getProjectProgress(project: {
   grade?: { component: string; marks: number }[];
-  projectmeeting?: { meetingstatus?: string }[];
+  projectmeeting?: { meetingstatus?: string | null }[];
 }): number {
   // Prefer grade-based progress when grades exist
   if (project.grade?.length) {

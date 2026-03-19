@@ -1969,6 +1969,7 @@ export namespace Prisma {
     convenerstaffid: number | null
     expertstaffid: number | null
     status: string | null
+    githuburl: string | null
     created: Date | null
     modified: Date | null
   }
@@ -1985,6 +1986,7 @@ export namespace Prisma {
     convenerstaffid: number | null
     expertstaffid: number | null
     status: string | null
+    githuburl: string | null
     created: Date | null
     modified: Date | null
   }
@@ -2001,6 +2003,7 @@ export namespace Prisma {
     convenerstaffid: number
     expertstaffid: number
     status: number
+    githuburl: number
     created: number
     modified: number
     _all: number
@@ -2035,6 +2038,7 @@ export namespace Prisma {
     convenerstaffid?: true
     expertstaffid?: true
     status?: true
+    githuburl?: true
     created?: true
     modified?: true
   }
@@ -2051,6 +2055,7 @@ export namespace Prisma {
     convenerstaffid?: true
     expertstaffid?: true
     status?: true
+    githuburl?: true
     created?: true
     modified?: true
   }
@@ -2067,6 +2072,7 @@ export namespace Prisma {
     convenerstaffid?: true
     expertstaffid?: true
     status?: true
+    githuburl?: true
     created?: true
     modified?: true
     _all?: true
@@ -2170,6 +2176,7 @@ export namespace Prisma {
     convenerstaffid: number | null
     expertstaffid: number | null
     status: string | null
+    githuburl: string | null
     created: Date | null
     modified: Date | null
     _count: ProjectgroupCountAggregateOutputType | null
@@ -2205,6 +2212,7 @@ export namespace Prisma {
     convenerstaffid?: boolean
     expertstaffid?: boolean
     status?: boolean
+    githuburl?: boolean
     created?: boolean
     modified?: boolean
     staff_projectgroup_convenerstaffidTostaff?: boolean | projectgroup$staff_projectgroup_convenerstaffidTostaffArgs<ExtArgs>
@@ -2228,6 +2236,7 @@ export namespace Prisma {
     convenerstaffid?: boolean
     expertstaffid?: boolean
     status?: boolean
+    githuburl?: boolean
     created?: boolean
     modified?: boolean
     staff_projectgroup_convenerstaffidTostaff?: boolean | projectgroup$staff_projectgroup_convenerstaffidTostaffArgs<ExtArgs>
@@ -2247,6 +2256,7 @@ export namespace Prisma {
     convenerstaffid?: boolean
     expertstaffid?: boolean
     status?: boolean
+    githuburl?: boolean
     created?: boolean
     modified?: boolean
     staff_projectgroup_convenerstaffidTostaff?: boolean | projectgroup$staff_projectgroup_convenerstaffidTostaffArgs<ExtArgs>
@@ -2266,11 +2276,12 @@ export namespace Prisma {
     convenerstaffid?: boolean
     expertstaffid?: boolean
     status?: boolean
+    githuburl?: boolean
     created?: boolean
     modified?: boolean
   }
 
-  export type projectgroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"projectgroupid" | "projecttypeid" | "projectgroupname" | "projecttitle" | "projectarea" | "projectdescription" | "averagecpi" | "description" | "convenerstaffid" | "expertstaffid" | "status" | "created" | "modified", ExtArgs["result"]["projectgroup"]>
+  export type projectgroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"projectgroupid" | "projecttypeid" | "projectgroupname" | "projecttitle" | "projectarea" | "projectdescription" | "averagecpi" | "description" | "convenerstaffid" | "expertstaffid" | "status" | "githuburl" | "created" | "modified", ExtArgs["result"]["projectgroup"]>
   export type projectgroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     staff_projectgroup_convenerstaffidTostaff?: boolean | projectgroup$staff_projectgroup_convenerstaffidTostaffArgs<ExtArgs>
     staff_projectgroup_expertstaffidTostaff?: boolean | projectgroup$staff_projectgroup_expertstaffidTostaffArgs<ExtArgs>
@@ -2313,6 +2324,7 @@ export namespace Prisma {
       convenerstaffid: number | null
       expertstaffid: number | null
       status: string | null
+      githuburl: string | null
       created: Date | null
       modified: Date | null
     }, ExtArgs["result"]["projectgroup"]>
@@ -2755,6 +2767,7 @@ export namespace Prisma {
     readonly convenerstaffid: FieldRef<"projectgroup", 'Int'>
     readonly expertstaffid: FieldRef<"projectgroup", 'Int'>
     readonly status: FieldRef<"projectgroup", 'String'>
+    readonly githuburl: FieldRef<"projectgroup", 'String'>
     readonly created: FieldRef<"projectgroup", 'DateTime'>
     readonly modified: FieldRef<"projectgroup", 'DateTime'>
   }
@@ -14249,6 +14262,7 @@ export namespace Prisma {
     convenerstaffid: 'convenerstaffid',
     expertstaffid: 'expertstaffid',
     status: 'status',
+    githuburl: 'githuburl',
     created: 'created',
     modified: 'modified'
   };
@@ -14504,6 +14518,7 @@ export namespace Prisma {
     convenerstaffid?: IntNullableFilter<"projectgroup"> | number | null
     expertstaffid?: IntNullableFilter<"projectgroup"> | number | null
     status?: StringNullableFilter<"projectgroup"> | string | null
+    githuburl?: StringNullableFilter<"projectgroup"> | string | null
     created?: DateTimeNullableFilter<"projectgroup"> | Date | string | null
     modified?: DateTimeNullableFilter<"projectgroup"> | Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: XOR<StaffNullableScalarRelationFilter, staffWhereInput> | null
@@ -14526,6 +14541,7 @@ export namespace Prisma {
     convenerstaffid?: SortOrderInput | SortOrder
     expertstaffid?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
+    githuburl?: SortOrderInput | SortOrder
     created?: SortOrderInput | SortOrder
     modified?: SortOrderInput | SortOrder
     staff_projectgroup_convenerstaffidTostaff?: staffOrderByWithRelationInput
@@ -14551,6 +14567,7 @@ export namespace Prisma {
     convenerstaffid?: IntNullableFilter<"projectgroup"> | number | null
     expertstaffid?: IntNullableFilter<"projectgroup"> | number | null
     status?: StringNullableFilter<"projectgroup"> | string | null
+    githuburl?: StringNullableFilter<"projectgroup"> | string | null
     created?: DateTimeNullableFilter<"projectgroup"> | Date | string | null
     modified?: DateTimeNullableFilter<"projectgroup"> | Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: XOR<StaffNullableScalarRelationFilter, staffWhereInput> | null
@@ -14573,6 +14590,7 @@ export namespace Prisma {
     convenerstaffid?: SortOrderInput | SortOrder
     expertstaffid?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
+    githuburl?: SortOrderInput | SortOrder
     created?: SortOrderInput | SortOrder
     modified?: SortOrderInput | SortOrder
     _count?: projectgroupCountOrderByAggregateInput
@@ -14597,6 +14615,7 @@ export namespace Prisma {
     convenerstaffid?: IntNullableWithAggregatesFilter<"projectgroup"> | number | null
     expertstaffid?: IntNullableWithAggregatesFilter<"projectgroup"> | number | null
     status?: StringNullableWithAggregatesFilter<"projectgroup"> | string | null
+    githuburl?: StringNullableWithAggregatesFilter<"projectgroup"> | string | null
     created?: DateTimeNullableWithAggregatesFilter<"projectgroup"> | Date | string | null
     modified?: DateTimeNullableWithAggregatesFilter<"projectgroup"> | Date | string | null
   }
@@ -15363,6 +15382,7 @@ export namespace Prisma {
     averagecpi?: number | null
     description?: string | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffCreateNestedOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffInput
@@ -15385,6 +15405,7 @@ export namespace Prisma {
     convenerstaffid?: number | null
     expertstaffid?: number | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedCreateNestedManyWithoutProjectgroupInput
@@ -15400,6 +15421,7 @@ export namespace Prisma {
     averagecpi?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffUpdateOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffNestedInput
@@ -15422,6 +15444,7 @@ export namespace Prisma {
     convenerstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     expertstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedUpdateManyWithoutProjectgroupNestedInput
@@ -15441,6 +15464,7 @@ export namespace Prisma {
     convenerstaffid?: number | null
     expertstaffid?: number | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
   }
@@ -15453,6 +15477,7 @@ export namespace Prisma {
     averagecpi?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -15469,6 +15494,7 @@ export namespace Prisma {
     convenerstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     expertstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -16375,6 +16401,7 @@ export namespace Prisma {
     convenerstaffid?: SortOrder
     expertstaffid?: SortOrder
     status?: SortOrder
+    githuburl?: SortOrder
     created?: SortOrder
     modified?: SortOrder
   }
@@ -16399,6 +16426,7 @@ export namespace Prisma {
     convenerstaffid?: SortOrder
     expertstaffid?: SortOrder
     status?: SortOrder
+    githuburl?: SortOrder
     created?: SortOrder
     modified?: SortOrder
   }
@@ -16415,6 +16443,7 @@ export namespace Prisma {
     convenerstaffid?: SortOrder
     expertstaffid?: SortOrder
     status?: SortOrder
+    githuburl?: SortOrder
     created?: SortOrder
     modified?: SortOrder
   }
@@ -18886,6 +18915,7 @@ export namespace Prisma {
     averagecpi?: number | null
     description?: string | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffCreateNestedOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffInput
@@ -18907,6 +18937,7 @@ export namespace Prisma {
     convenerstaffid?: number | null
     expertstaffid?: number | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     projectmeeting?: projectmeetingUncheckedCreateNestedManyWithoutProjectgroupInput
@@ -18971,6 +19002,7 @@ export namespace Prisma {
     averagecpi?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffUpdateOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffNestedInput
@@ -18992,6 +19024,7 @@ export namespace Prisma {
     convenerstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     expertstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projectmeeting?: projectmeetingUncheckedUpdateManyWithoutProjectgroupNestedInput
@@ -19090,6 +19123,7 @@ export namespace Prisma {
     averagecpi?: number | null
     description?: string | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffCreateNestedOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffInput
@@ -19111,6 +19145,7 @@ export namespace Prisma {
     convenerstaffid?: number | null
     expertstaffid?: number | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedCreateNestedManyWithoutProjectgroupInput
@@ -19220,6 +19255,7 @@ export namespace Prisma {
     averagecpi?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffUpdateOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffNestedInput
@@ -19241,6 +19277,7 @@ export namespace Prisma {
     convenerstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     expertstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedUpdateManyWithoutProjectgroupNestedInput
@@ -19437,6 +19474,7 @@ export namespace Prisma {
     averagecpi?: number | null
     description?: string | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffCreateNestedOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffInput
@@ -19457,6 +19495,7 @@ export namespace Prisma {
     convenerstaffid?: number | null
     expertstaffid?: number | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedCreateNestedManyWithoutProjectgroupInput
@@ -19505,6 +19544,7 @@ export namespace Prisma {
     convenerstaffid?: IntNullableFilter<"projectgroup"> | number | null
     expertstaffid?: IntNullableFilter<"projectgroup"> | number | null
     status?: StringNullableFilter<"projectgroup"> | string | null
+    githuburl?: StringNullableFilter<"projectgroup"> | string | null
     created?: DateTimeNullableFilter<"projectgroup"> | Date | string | null
     modified?: DateTimeNullableFilter<"projectgroup"> | Date | string | null
   }
@@ -19517,6 +19557,7 @@ export namespace Prisma {
     averagecpi?: number | null
     description?: string | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     staff_projectgroup_expertstaffidTostaff?: staffCreateNestedOneWithoutProjectgroup_projectgroup_expertstaffidTostaffInput
@@ -19537,6 +19578,7 @@ export namespace Prisma {
     description?: string | null
     expertstaffid?: number | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedCreateNestedManyWithoutProjectgroupInput
@@ -19562,6 +19604,7 @@ export namespace Prisma {
     averagecpi?: number | null
     description?: string | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffCreateNestedOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffInput
@@ -19582,6 +19625,7 @@ export namespace Prisma {
     description?: string | null
     convenerstaffid?: number | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedCreateNestedManyWithoutProjectgroupInput
@@ -20305,6 +20349,7 @@ export namespace Prisma {
     averagecpi?: number | null
     description?: string | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffCreateNestedOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffInput
@@ -20326,6 +20371,7 @@ export namespace Prisma {
     convenerstaffid?: number | null
     expertstaffid?: number | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedCreateNestedManyWithoutProjectgroupInput
@@ -20400,6 +20446,7 @@ export namespace Prisma {
     averagecpi?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffUpdateOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffNestedInput
@@ -20421,6 +20468,7 @@ export namespace Prisma {
     convenerstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     expertstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedUpdateManyWithoutProjectgroupNestedInput
@@ -20674,6 +20722,7 @@ export namespace Prisma {
     convenerstaffid?: number | null
     expertstaffid?: number | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
   }
@@ -20686,6 +20735,7 @@ export namespace Prisma {
     averagecpi?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffUpdateOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffNestedInput
@@ -20706,6 +20756,7 @@ export namespace Prisma {
     convenerstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     expertstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedUpdateManyWithoutProjectgroupNestedInput
@@ -20724,6 +20775,7 @@ export namespace Prisma {
     convenerstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     expertstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -20739,6 +20791,7 @@ export namespace Prisma {
     description?: string | null
     expertstaffid?: number | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
   }
@@ -20754,6 +20807,7 @@ export namespace Prisma {
     description?: string | null
     convenerstaffid?: number | null
     status?: string | null
+    githuburl?: string | null
     created?: Date | string | null
     modified?: Date | string | null
   }
@@ -20833,6 +20887,7 @@ export namespace Prisma {
     averagecpi?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     staff_projectgroup_expertstaffidTostaff?: staffUpdateOneWithoutProjectgroup_projectgroup_expertstaffidTostaffNestedInput
@@ -20853,6 +20908,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     expertstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedUpdateManyWithoutProjectgroupNestedInput
@@ -20871,6 +20927,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     expertstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -20883,6 +20940,7 @@ export namespace Prisma {
     averagecpi?: NullableFloatFieldUpdateOperationsInput | number | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     staff_projectgroup_convenerstaffidTostaff?: staffUpdateOneWithoutProjectgroup_projectgroup_convenerstaffidTostaffNestedInput
@@ -20903,6 +20961,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     convenerstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projectgroupmember?: projectgroupmemberUncheckedUpdateManyWithoutProjectgroupNestedInput
@@ -20921,6 +20980,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     convenerstaffid?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    githuburl?: NullableStringFieldUpdateOperationsInput | string | null
     created?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
